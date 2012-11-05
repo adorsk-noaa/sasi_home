@@ -1,0 +1,13 @@
+<?php
+
+function sasi_home_menu(){
+  $items['sasi/run_sasi'] = array(
+    'title' => 'Run SASI',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('sasi_home_run_sasi_form'),
+    'access callback' => true,
+    'description' => 'Run SASI Form',
+    'file' => 'run_sasi_form.inc'
+  );
+  return $items;
+}

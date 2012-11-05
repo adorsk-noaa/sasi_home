@@ -1,0 +1,4 @@
+name = SASI Home
+description = SASI home page customizations
+core = 7.x
+package = SASI Home

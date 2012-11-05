@@ -1,0 +1,13 @@
+body{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#header{
+  background-color: inherit;
+  border-bottom: thin solid gray;
+}
+
+#branding{
+  background-color: inherit;
+}

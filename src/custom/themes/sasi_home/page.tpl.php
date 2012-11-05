@@ -1,0 +1,54 @@
+
+  <div id="header" class="clearfix">
+        <div id="logo-floater">
+        <?php if ($logo || $site_name): ?>
+          <?php if ($title): ?>
+            <div id="branding"><strong><a href="<?php print $front_page ?>">
+            <?php if ($logo): ?>
+              <img src="<?php print $logo ?>" alt="<?php print $site_name ?>" title="<?php print $site_name ?>" id="logo" />
+            <?php endif; ?>
+            </a></strong></div>
+          <?php else: /* Use h1 when the content title is empty */ ?>
+            <h1 id="branding"><a href="<?php print $front_page ?>">
+            <?php if ($logo): ?>
+              <img src="<?php print $logo ?>" alt="<?php print $site_name ?>" title="<?php print $site_name ?>" id="logo" />
+            <?php endif; ?>
+            <?php print $site_html ?>
+            </a></h1>
+        <?php endif; ?>
+        <?php endif; ?>
+    </div>
+
+  </div>
+
+
+  <div id="page">
+
+    <div class="breadcrumb">
+      <?php print $breadcrumb; ?>
+    </div>
+
+    <?php if ($secondary_local_tasks): ?>
+      <div class="tabs-secondary clearfix"><ul class="tabs secondary"><?php print render($secondary_local_tasks); ?></ul></div>
+    <?php endif; ?>
+
+
+    <div id="content" class="clearfix">
+      <div class="element-invisible"><a id="main-content"></a></div>
+      <?php if ($messages): ?>
+        <div id="console" class="clearfix"><?php print $messages; ?></div>
+      <?php endif; ?>
+      <?php if ($page['help']): ?>
+        <div id="help">
+          <?php print render($page['help']); ?>
+        </div>
+      <?php endif; ?>
+      <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
+      <?php print render($page['content']); ?>
+    </div>
+
+    <div id="footer">
+      <?php print $feed_icons; ?>
+    </div>
+
+  </div>
