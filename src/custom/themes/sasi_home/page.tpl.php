@@ -13,7 +13,6 @@
             <?php if ($logo): ?>
               <img src="<?php print $logo ?>" alt="<?php print $site_name ?>" title="<?php print $site_name ?>" id="logo" />
             <?php endif; ?>
-            <?php print $site_html ?>
             </a></h1>
         <?php endif; ?>
         <?php endif; ?>
