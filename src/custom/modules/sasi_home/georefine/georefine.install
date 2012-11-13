@@ -28,9 +28,6 @@ function georefine_install() {
     $field_instances[$field_id] = array(
       'field_name' => $field_id,
       'label' => $t($field_id),
-      'widget' => array(
-        'type' => 'text_textarea'
-      ),
     );
   }
 
@@ -51,6 +48,13 @@ function _georefine_project_fields(){
       'field_name' => 'georefine_project_id',
       'cardinality' => 1,
       'type' => 'text',
+    ),
+
+    // Description.
+    'georefine_project_description' => array(
+      'field_name' => 'georefine_project_description',
+      'cardinality' => 1,
+      'type' => 'text_long',
     ),
   );
 
