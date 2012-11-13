@@ -11,3 +11,15 @@ function sasi_home_menu(){
   );
   return $items;
 }
+
+/**
+ * Callback handler for when run_sasi tasks complete.
+ * Will receive task node as an argument.
+ */
+function sasi_home_run_sasi_task_completed($node){
+  watchdog('debug', 'garbanzon!');
+  // Get project id from task data.
+  $task_array = xtasks_task_to_array($node);
+  $project_id = $task_array['data']['project_id'];
+  $node->title = "Flagroato";
+}
