@@ -16,8 +16,7 @@ function sasi_home_run_sasi_form($form, &$form_state) {
 
 function sasi_home_run_sasi_form_validate($form, &$form_state) {
   $file = file_save_upload('sasi_bundle', array(
-    'file_validate_is_image' => array(), // Validates file is really an image.
-    'file_validate_extensions' => array('png gif jpg jpeg'), // Validate extensions.
+    'file_validate_extensions' => array()
   ));
   // If the file passed validation:
   if ($file) {
@@ -35,7 +34,7 @@ function sasi_home_run_sasi_form_validate($form, &$form_state) {
   }
 }
 
-function sasi_home_test_form_submit($form, &$form_state) {
+function sasi_home_run_sasi_form_submit($form, &$form_state) {
   $file = $form_state['storage']['sasi_bundle'];
   // We are done with the file, remove it from storage.
   unset($form_state['storage']['sasi_bundle']);
@@ -43,7 +42,26 @@ function sasi_home_test_form_submit($form, &$form_state) {
   $file->status = FILE_STATUS_PERMANENT;
   // Save file status.
   file_save($file);
+  $file_path = drupal_realpath($file->uri);
 
-  // Set a response to the user.
-  drupal_set_message(t('The form has been submitted.'));
+  // Create xtask w/ file as an input argument for run_sasi_task.
+  $task_def = array(
+    'config' => array(
+      'command' => "/home/adorsk/projects/sasi_runner/task_runner.sh",
+      'task' => array(
+        'class' => 'sasi_runner.tasks.run_sasi_task.RunSasiTask',
+        'kwargs' => array(
+          'input_file' => $file_path
+        )
+      )
+    )
+  );
+  $task = xtasks_create_xtask($task_def);
+
+  // Start running the task.
+  xtasks_run_task($task->nid);
+
+  // Go to the task's status page.
+  drupal_goto(xtasks_url_for_task_status_page($task->nid, array('absolute' => TRUE)));
+
 }
