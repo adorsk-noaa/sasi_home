@@ -19,3 +19,20 @@ function georefine_node_info(){
 function georefine_project_form($node, $form_state){
   return node_content_form($node, $form_state);
 }
+
+/**
+ * Preprocess hook to add GeoRefine iframe to full view mode.
+ */
+function georefine_preprocess_node(&$vars){
+  if (
+    $vars['type'] == 'georefine_project'
+    && $vars['view_mode'] == 'full'
+  ){
+    $node = $vars['node'];
+    $project_id = $node->georefine_project_id[LANGUAGE_NONE][0]['value'];
+    // TODO: GET THIS FROM CONFIG VAR
+    $GEOREFINE_PROJECT_URL_TEMPLATE = 'http://localhost:8000/georefine/projects/view/client/%s/';
+    $vars['georefine_project_url'] = sprintf($GEOREFINE_PROJECT_URL_TEMPLATE, $project_id);
+  }
+}
+
