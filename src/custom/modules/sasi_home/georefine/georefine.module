@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implements hook_node_info().
+ */
+function georefine_node_info(){
+  return array(
+    'georefine_project' => array(
+      'name' => t('GeoRefine Project'),
+      'base' => 'georefine_project',
+      'description' => t('A page which includes a GeoRefine project page via an iframe')
+    )
+  );
+}
+
+/**
+ * Implements hook_form().
+ */
+function georefine_project_form($node, $form_state){
+  return node_content_form($node, $form_state);
+}

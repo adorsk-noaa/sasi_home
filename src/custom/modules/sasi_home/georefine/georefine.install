@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ *   georefine module install hooks.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function georefine_install() {
+  // Pointer to translation function.
+  $t = get_t();
+
+  // Update node types.
+  node_types_rebuild();
+  $types = node_type_get_types();
+
+  // Create all the fields we are adding to georefine_project content type.
+  $fields = _georefine_project_fields();
+  foreach ($fields as $field) {
+    field_create_field($field);
+  }
+
+  // Create all the instances for our fields.
+  $field_instances = array();
+  foreach ($fields as $field_id => $field) {
+    $field_instances[$field_id] = array(
+      'field_name' => $field_id,
+      'label' => $t($field_id),
+      'widget' => array(
+        'type' => 'text_textarea'
+      ),
+    );
+  }
+
+  foreach ($field_instances as $instance) {
+    $instance['entity_type'] = 'node';
+    $instance['bundle'] = 'georefine_project';
+    field_create_instance($instance);
+  }
+}
+
+/**
+ * Define fields.
+ */
+function _georefine_project_fields(){
+  $fields = array(
+    // Project id.
+    'georefine_project_id' => array(
+      'field_name' => 'georefine_project_id',
+      'cardinality' => 1,
+      'type' => 'text',
+    ),
+  );
+
+  return $fields;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function georefine_uninstall() {
+  // Delete all nodes that might have been created with this
+  // module's content types.
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  $result = db_query($sql, array(':type' => 'georefine_project'));
+  $nids = array();
+  foreach ($result as $row) {
+    $nids[] = $row->nid;
+  }
+  node_delete_multiple($nids);
+
+  // Loop over each of the fields defined by this module and delete
+  // all instances of the field, their data, and the field itself.
+  foreach (array_keys(_georefine_project_fields()) as $field) {
+    field_delete_field($field);
+  }
+
+  // Loop over any remaining field instances attached to the 
+  // xtask content type and delete them individually.
+  $instances = field_info_instances('node', 'georefine_project');
+  foreach ($instances as $instance_name => $instance) {
+    field_delete_instance($instance);
+  }
+
+  // Delete our content type
+  node_type_delete('georefine_project');
+
+  // Purge all field infromation
+  field_purge_batch(1000);
+}
