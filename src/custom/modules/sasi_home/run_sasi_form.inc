@@ -48,22 +48,18 @@ function sasi_home_run_sasi_form_submit($form, &$form_state) {
   $task_def = array(
     'config' => array(
       'command' => "/home/adorsk/projects/sasi_runner/task_runner.sh",
-      /*
       'task' => array(
         'class' => 'sasi_runner.tasks.run_sasi_task.RunSasiTask',
         'kwargs' => array(
           'input_file' => $file_path
         )
       )
-       */
-      "task" => array(
-        "class" => "task_manager.dummy_task.DummyTask",
-        //"kwargs" => array("n" => 3)
-      )
     ),
-    'completed_callback' => 'sasi_home_run_sasi_task_completed'
+    'resolved_callback' => 'sasi_home_run_sasi_resolved',
+    'completed_page_callback' => 'sasi_home_run_sasi_completed_page'
   );
   $node = xtasks_array_to_task($task_def);
+  node_save($node);
 
   // Start running the task.
   xtasks_run_task($node->nid);

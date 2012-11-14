@@ -16,10 +16,35 @@ function sasi_home_menu(){
  * Callback handler for when run_sasi tasks complete.
  * Will receive task node as an argument.
  */
-function sasi_home_run_sasi_task_completed($node){
-  watchdog('debug', 'garbanzon!');
+function sasi_home_run_sasi_resolved($node){
   // Get project id from task data.
   $task_array = xtasks_task_to_array($node);
   $project_id = $task_array['data']['project_id'];
-  $node->title = "Flagroato";
+
+  // Create georefine project.
+  $georefine_node = new stdClass();
+  $georefine_node->type = 'georefine_project';
+  node_object_prepare($georefine_node);
+  $georefine_node->language = LANGUAGE_NONE;
+  $georefine_node->title = 'Geo Project';
+
+  // Set project id.
+  $georefine_node->georefine_project_id[LANGUAGE_NONE][0]['value'] = $project_id;
+  node_save($georefine_node);
+
+  // Save georefine node nid to task node data.
+  $task_array['data']['georefine_nid'] = $georefine_node->nid;
+  $node->xtasks_data[LANGUAGE_NONE][0]['value'] = json_encode($task_array['data']);
+}
+
+/**
+ * Task completed status page callback for sasi_run tasks.
+ * Will receive task node nid as an argument.
+ */
+function sasi_home_run_sasi_completed_page($node){
+  $task_array = xtasks_task_to_array($node);
+  $georefine_nid = $task_array['data']['georefine_nid'];
+  $georefine_project_url = url('node/' . $georefine_nid);
+  $output = 'Data explorer page created. Click here to go to the page: <a href="' . $georefine_project_url . '">Data Explorer Page</a>';
+  return $output;
 }
