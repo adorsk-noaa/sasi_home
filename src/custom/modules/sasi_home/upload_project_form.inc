@@ -79,7 +79,7 @@ function sasi_home_upload_project_form_submit($form, &$form_state){
 
   // Send email if notify addresses were given.
   if ($notify){
-    drupal_mail('sasi_home', 'task_started', $notify, '', array('task_id' => $node->nid, 'task_url' => $task_status_page_url), $send = TRUE);
+    drupal_mail('sasi_home', 'task_started', $notify, NULL, array('task_id' => $node->nid, 'task_url' => $task_status_page_url), NULL, TRUE);
   }
 
   // Go to the task's status page.
