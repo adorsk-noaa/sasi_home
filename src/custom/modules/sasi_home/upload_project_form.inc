@@ -6,6 +6,12 @@ function sasi_home_upload_project_form($form, &$form_state) {
     '#title' => t('SASI Project Bundle')
   );
 
+  $form['notify'] = array(
+    '#type' => 'textfield',
+    '#title' => 'email',
+    '#description' => 'Enter an email address here to be alerted when the task finishes. (optional)'
+  );
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('submit'),
@@ -44,7 +50,8 @@ function sasi_home_upload_project_form_submit($form, &$form_state){
   file_save($file);
   $file_path = drupal_realpath($file->uri);
 
-  dpm("yo $file_path");
+  // Notify on task complete.
+  $notify= $form_state['values']['notify'];
 
   // Create xtask w/ file as an input argument for run_sasi_task.
   $task_def = array(
@@ -55,9 +62,11 @@ function sasi_home_upload_project_form_submit($form, &$form_state){
         'kwargs' => array(
           'input_path' => $file_path
         )
-      )
+      ),
+      'notify' => $notify,
     ),
-    'resolved_callback' => 'sasi_home_upload_project_resolved',
+    'resolved_callback' => 'sasi_home_upload_project_completed',
+    'rejected_callback' => 'sasi_home_upload_project_completed',
     'completed_page_callback' => 'sasi_home_upload_project_completed_page'
   );
   $node = xtasks_array_to_task($task_def);
@@ -66,7 +75,14 @@ function sasi_home_upload_project_form_submit($form, &$form_state){
   // Start running the task.
   xtasks_run_task($node->nid);
 
+  $task_status_page_url = xtasks_url_for_task_status_page($node->nid, array('absolute' => TRUE));
+
+  // Send email if notify addresses were given.
+  if ($notify){
+    drupal_mail('sasi_home', 'task_started', $notify, '', array('task_id' => $node->nid, 'task_url' => $task_status_page_url), $send = TRUE);
+  }
+
   // Go to the task's status page.
-  drupal_goto(xtasks_url_for_task_status_page($node->nid, array('absolute' => TRUE)));
+  drupal_goto($task_status_page_url);
 
 }

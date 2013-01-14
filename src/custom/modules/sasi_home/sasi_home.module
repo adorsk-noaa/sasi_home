@@ -16,28 +16,37 @@ function sasi_home_menu(){
 }
 
 /**
- * Callback handler for when run_sasi tasks complete.
+ * Callback handler for when run_sasi tasks resolve.
  * Will receive task node as an argument.
  */
-function sasi_home_upload_project_resolved($node){
+function sasi_home_upload_project_completed($node){
+
   // Get project id from task data.
   $task_array = xtasks_task_to_array($node);
-  $project_id = $task_array['data']['project_id'];
 
-  // Create georefine project.
-  $georefine_node = new stdClass();
-  $georefine_node->type = 'georefine_project';
-  node_object_prepare($georefine_node);
-  $georefine_node->language = LANGUAGE_NONE;
-  $georefine_node->title = 'Geo Project';
+  if ($task_array['config']['notify']){
+    $task_status_page_url = xtasks_url_for_task_status_page($node->nid, array('absolute' => TRUE));
+    drupal_mail('sasi_home', 'task_finished', $task_array['config']['notify'], '', array('task_id' => $node->nid, 'task_url' => $task_status_page_url), $send = TRUE);
+  }
 
-  // Set project id.
-  $georefine_node->georefine_project_id[LANGUAGE_NONE][0]['value'] = $project_id;
-  node_save($georefine_node);
+  if ($task_array['status'] == 'resolved'){
+    $project_id = $task_array['data']['project_id'];
 
-  // Save georefine node nid to task node data.
-  $task_array['data']['georefine_nid'] = $georefine_node->nid;
-  $node->xtasks_data[LANGUAGE_NONE][0]['value'] = json_encode($task_array['data']);
+    // Create georefine project.
+    $georefine_node = new stdClass();
+    $georefine_node->type = 'georefine_project';
+    node_object_prepare($georefine_node);
+    $georefine_node->language = LANGUAGE_NONE;
+    $georefine_node->title = 'Geo Project';
+
+    // Set project id.
+    $georefine_node->georefine_project_id[LANGUAGE_NONE][0]['value'] = $project_id;
+    node_save($georefine_node);
+
+    // Save georefine node nid to task node data.
+    $task_array['data']['georefine_nid'] = $georefine_node->nid;
+    $node->xtasks_data[LANGUAGE_NONE][0]['value'] = json_encode($task_array['data']);
+  }
 }
 
 /**
@@ -50,4 +59,33 @@ function sasi_home_upload_project_completed_page($node){
   $georefine_project_url = url('node/' . $georefine_nid);
   $output = 'Data explorer page created. Click here to go to the page: <a href="' . $georefine_project_url . '">Data Explorer Page</a>';
   return $output;
+}
+
+/**
+ * Mailing functions.
+ */
+function sasi_home_mail ($key, &$message, $params) {
+  switch ($key) {
+    case 'task_started':
+      // Set headers etc
+      $message['subject'] = "[SASI Home] Task #" . $params['task_id'] . " Started";
+      $message['body'][] = <<<EOS
+Your task has been started.
+
+You can view the progress of the task at this location:
+{$params['task_url']} .
+
+Another email will be sent to this address when the task finishes.
+EOS;
+      break;
+    case 'task_finished':
+      $message['subject'] = "[SASI Home] Task #" . $params['task_id'] . " Finished";
+      $message['body'][] = <<<EOS
+Your task has finished.
+
+You can view the result at this location:
+{$params['task_url']} .
+EOS;
+      break;
+  }
 }
