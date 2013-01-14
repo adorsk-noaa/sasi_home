@@ -55,10 +55,16 @@ function sasi_home_upload_project_completed($node){
  */
 function sasi_home_upload_project_completed_page($node){
   $task_array = xtasks_task_to_array($node);
-  $georefine_nid = $task_array['data']['georefine_nid'];
-  $georefine_project_url = url('node/' . $georefine_nid);
-  $output = 'Data explorer page created. Click here to go to the page: <a href="' . $georefine_project_url . '">Data Explorer Page</a>';
-  return $output;
+  if ($task_array['status'] == 'resolved'){
+    $georefine_nid = $task_array['data']['georefine_nid'];
+    $georefine_project_url = url('node/' . $georefine_nid);
+    $output = 'Data explorer page created. Click here to go to the page: <a href="' . $georefine_project_url . '">Data Explorer Page</a>';
+    return $output;
+  }
+  else{
+    //return xtasks_task_default_completed_page($node);
+    return '<span class="error">Please check your project file and try resubmitting.</span>';
+  }
 }
 
 /**
