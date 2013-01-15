@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('inc', 'georefine', 'georefine.config');
+
 /**
  * Implements hook_node_info().
  */
@@ -31,7 +33,7 @@ function georefine_preprocess_node(&$vars){
     $node = $vars['node'];
     $project_id = $node->georefine_project_id[LANGUAGE_NONE][0]['value'];
     // TODO: GET THIS FROM CONFIG VAR
-    $GEOREFINE_PROJECT_URL_TEMPLATE = 'http://localhost:8000/georefine/projects/view/client/%s/';
+    $GEOREFINE_PROJECT_URL_TEMPLATE = GEOREFINE_BASE_URL . '/projects/view/client/%s/';
     $vars['georefine_project_url'] = sprintf($GEOREFINE_PROJECT_URL_TEMPLATE, $project_id);
   }
 }
