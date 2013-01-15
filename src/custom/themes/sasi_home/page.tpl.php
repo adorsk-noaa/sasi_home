@@ -22,10 +22,6 @@
 
   <div id="page">
 
-    <?php if ($secondary_local_tasks): ?>
-      <div class="tabs-secondary clearfix"><ul class="tabs secondary"><?php print render($secondary_local_tasks); ?></ul></div>
-    <?php endif; ?>
-
     <table id="container" class="clearfix">
       <tbody>
       <tr>
@@ -45,8 +41,11 @@
             <h1<?php print $tabs ? ' class="with-tabs"' : '' ?>><?php print $title ?></h1>
           <?php endif; ?>
           <?php print render($title_suffix); ?>
-          <?php if ($tabs): ?><?php print render($tabs); ?></div><?php endif; ?>
-          <?php print render($tabs2); ?>
+          <?php print render($primary_local_tasks); ?>
+          <?php if ($secondary_local_tasks): ?>
+            <div class="tabs-secondary clearfix"><ul class="tabs secondary"><?php print render($secondary_local_tasks); ?></ul></div>
+          </div>
+          <?php endif; ?>
           <?php print render($page['help']); ?>
           <div class="clearfix">
             <?php print render($page['content']); ?>
