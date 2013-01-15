@@ -23,6 +23,7 @@
   <div id="page">
 
     <table id="container" class="clearfix">
+      <?php print $breadcrumb; ?>
       <tbody>
       <tr>
       <?php if ($page['sidebar_first']): ?>
@@ -32,7 +33,6 @@
       <?php endif; ?>
 
         <td id="main-content-container">
-          <?php print $breadcrumb; ?>
           <a id="main-content"></a>
           <?php print $messages; ?>
           <?php if ($tabs): ?><div id="tabs-wrapper" class="clearfix"><?php endif; ?>
