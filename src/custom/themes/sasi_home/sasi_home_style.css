@@ -1,6 +1,7 @@
 body{
   margin-left: 10px;
   margin-right: 10px;
+  min-width: 980px;
 }
 
 #header{
@@ -11,3 +12,30 @@ body{
 #branding{
   background-color: inherit;
 }
+
+#container {
+  border: 0;
+}
+
+#container > tbody > tr >td {
+  vertical-align: top;
+  border: 0;
+}
+
+#sidebar-first {
+  width: 210px;
+}
+
+#tabs-wrapper{
+  margin: 0 0 10px 0;
+  padding: 0;
+  border: 0;
+  position: relative;
+}
+
+h1.with-tabs {
+  float: left;
+  margin: 10px 0 0 0;
+}
+
+
