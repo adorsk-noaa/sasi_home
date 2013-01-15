@@ -20,12 +20,18 @@
 
   </div>
 
+  <div id="branding" class="clearfix">
+    <?php print $breadcrumb; ?>
+    <?php print render($title_prefix); ?>
+    <?php if ($title): ?>
+      <h1 class="page-title"><?php print $title; ?></h1>
+    <?php endif; ?>
+    <?php print render($title_suffix); ?>
+    <?php print render($primary_local_tasks); ?>
+  </div>
+
 
   <div id="page">
-
-    <div class="breadcrumb">
-      <?php print $breadcrumb; ?>
-    </div>
 
     <?php if ($secondary_local_tasks): ?>
       <div class="tabs-secondary clearfix"><ul class="tabs secondary"><?php print render($secondary_local_tasks); ?></ul></div>
