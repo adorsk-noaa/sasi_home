@@ -42,4 +42,10 @@ h1.with-tabs {
   margin-top: 10px;
 }
 
+.node-unpublished {
+  background-color: inherit;
+}
 
+.node-unpublished .content{
+  background-color: #fff4f4;
+}

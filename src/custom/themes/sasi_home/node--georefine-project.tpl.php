@@ -6,6 +6,12 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
+  <?php if (! $status): ?>
+    <div class="node-status messages warning">
+      Warning: This page is currently unpublished and is not visible to general visitors. To publish the page, click the 'edit' tab and look for 'publishing options' near the bottom of the page.
+    </div>
+  <?php endif; ?>
+
   <div class="content clearfix"<?php print $content_attributes; ?>>
     <?php
       print render($content);
