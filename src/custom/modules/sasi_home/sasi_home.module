@@ -7,13 +7,25 @@ function sasi_home_menu(){
     'title' => 'Upload SASI Project',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('sasi_home_upload_project_form'),
-    // !!!!! CHANGE ACCESS !!!!!!!
-    'access callback' => true,
+    'access arguments' => array('sasi_home_upload_project'),
     'description' => 'Upload SASI Project Form',
     'file' => 'upload_project_form.inc'
   );
   return $items;
 }
+
+/**
+ * Define custom permissions for SASI home site.
+ */
+function sasi_home_permission(){
+  $permissions = array(
+    'sasi_home_upload_project' => array(
+      'title' => 'Upload Project'
+    )
+  );
+  return $permissions;
+}
+
 
 /**
  * Callback handler for when run_sasi tasks resolve.
@@ -37,7 +49,7 @@ function sasi_home_upload_project_completed($node){
     $georefine_node->type = 'georefine_project';
     node_object_prepare($georefine_node);
     $georefine_node->language = LANGUAGE_NONE;
-    $georefine_node->title = 'Geo Project';
+    $georefine_node->title = 'Geo Project #' . $project_id;
 
     // Set project id.
     $georefine_node->georefine_project_id[LANGUAGE_NONE][0]['value'] = $project_id;
