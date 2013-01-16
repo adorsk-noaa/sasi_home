@@ -11,8 +11,10 @@
       print render($content);
     ?>
     <div class="georefine">
+      <?php if (isset($georefine_project_url)): ?>
       <iframe src="<?php print $georefine_project_url ?>" style="width: 100%; height: 800px;">
       </iframe>
+      <?php endif; ?>
     </div>
   </div>
 

@@ -31,6 +31,9 @@ function georefine_preprocess_node(&$vars){
     && $vars['view_mode'] == 'full'
   ){
     $node = $vars['node'];
+    if (! isset($node->georefine_project_id[LANGUAGE_NONE][0]['value'])){
+      return;
+    }
     $project_id = $node->georefine_project_id[LANGUAGE_NONE][0]['value'];
     $GEOREFINE_PROJECT_URL_TEMPLATE = GEOREFINE_BASE_URL . '/projects/view/client/%s/';
     $vars['georefine_project_url'] = sprintf($GEOREFINE_PROJECT_URL_TEMPLATE, $project_id);
