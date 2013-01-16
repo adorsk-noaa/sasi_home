@@ -56,7 +56,7 @@ function sasi_home_upload_project_form_submit($form, &$form_state){
   // Create xtask w/ file as an input argument for run_sasi_task.
   $task_def = array(
     'config' => array(
-      'command' => SASI_HOME_TASK_RUNNER_PATH,
+      'command' => SASI_HOME_CREATE_PROJECT_COMMAND,
       'task' => array(
         'class' => 'georefine.tasks.create_project_task.CreateProjectTask',
         'kwargs' => array(
