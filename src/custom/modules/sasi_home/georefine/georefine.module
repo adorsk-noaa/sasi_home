@@ -32,9 +32,47 @@ function georefine_preprocess_node(&$vars){
   ){
     $node = $vars['node'];
     $project_id = $node->georefine_project_id[LANGUAGE_NONE][0]['value'];
-    // TODO: GET THIS FROM CONFIG VAR
     $GEOREFINE_PROJECT_URL_TEMPLATE = GEOREFINE_BASE_URL . '/projects/view/client/%s/';
     $vars['georefine_project_url'] = sprintf($GEOREFINE_PROJECT_URL_TEMPLATE, $project_id);
   }
 }
 
+/**
+ * When node is deleted, delete corresponding georefine project.
+ */
+function georefine_project_delete($node){
+  // Don't do anything here if there's no project id, just continue w/
+  // normal deletion.
+  if (! isset($node->georefine_project_id[LANGUAGE_NONE][0]['value'])){
+    return;
+  }
+  // Otherwise run the delete command and pass it the project id.
+  $project_id = $node->georefine_project_id[LANGUAGE_NONE][0]['value'];
+
+  // If not a number, don't do anything here.
+  if (! is_numeric($project_id)){
+    return;
+  }
+
+  $cmd = GEOREFINE_DELETE_PROJECT_COMMAND . " -v $project_id";
+  $descriptorspec = array(
+    array("pipe", "r"), // STDIN
+    array("pipe", "w"), // STDOUT
+    array("pipe", "w"), // STDERR
+  );
+  $proc = proc_open($cmd, $descriptorspec, $pipes);
+  if (is_resource($proc)){
+    fclose($pipes[0]);
+    $stdout = stream_get_contents($pipes[1]);
+    fclose($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[2]);
+    $ret = proc_close($proc);
+    if ($ret != 0){
+      throw new Exception("Error deleting project with id '$project_id': '$stderr'");
+    }
+  }
+  else{
+    throw new Exception("Could not run command '$cmd'");
+  }
+}
