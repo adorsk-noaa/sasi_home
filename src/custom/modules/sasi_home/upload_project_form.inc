@@ -70,6 +70,7 @@ function sasi_home_upload_project_form_submit($form, &$form_state){
     'completed_page_callback' => 'sasi_home_upload_project_completed_page'
   );
   $node = xtasks_array_to_task($task_def);
+  $node->title = sprintf("Upload SASI Project File '%s'", basename($file_path));
   node_save($node);
 
   // Start running the task.

@@ -59,6 +59,7 @@ function sasi_home_upload_project_completed($node){
     $task_array['data']['georefine_nid'] = $georefine_node->nid;
     $node->xtasks_data[LANGUAGE_NONE][0]['value'] = json_encode($task_array['data']);
   }
+
 }
 
 /**
