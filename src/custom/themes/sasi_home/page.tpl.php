@@ -59,4 +59,14 @@
       <?php print $feed_icons; ?>
     </div>
 
+     <!-- login div -->
+    <div id="sasi-login" class="sasi-login">
+      <?php if ($logged_in): ?>
+        <a href="<?php print $base_path . 'user/logout';?>">Logout</a>
+      <?php endif; ?>
+      <?php if (! $logged_in):?>
+        <a href="<?php print $base_path . 'user/login';?>">Login</a>
+      <?php endif; ?>
+    </div>
+
   </div>

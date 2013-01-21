@@ -49,3 +49,16 @@ h1.with-tabs {
 .node-unpublished .content{
   background-color: #fff4f4;
 }
+
+/* Login */
+#sasi-login{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+#sasi-login a{
+  color: gray;
+}
