@@ -18,7 +18,7 @@
     ?>
     <div class="georefine">
       <?php if (isset($georefine_project_url)): ?>
-      <iframe src="<?php print $georefine_project_url ?>" style="width: 100%; height: 800px;">
+      <iframe id="clientFrame" style="width: 100%; height: 800px;">
       </iframe>
       <?php endif; ?>
     </div>
@@ -34,3 +34,15 @@
   </div>
 
 </div>
+
+<script>
+var hash = window.location.hash;
+var $clientFrame = jQuery('#clientFrame');
+var projectUrl = "<?php print $georefine_project_url ?>#";
+projectUrl += '/shareLinkUrlTemplate=' +  encodeURIComponent(window.location.origin + window.location.pathname + '#/stateKey={{STATE_KEY}}/') + '/';
+var stateKeyMatch;
+if (stateKeyMatch = new RegExp('/stateKey=(.*)/').exec(hash)){
+  projectUrl += stateKeyMatch[0];
+}
+$clientFrame.attr('src', projectUrl);
+</script>
