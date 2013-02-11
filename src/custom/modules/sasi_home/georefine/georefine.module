@@ -35,7 +35,7 @@ function georefine_preprocess_node(&$vars){
       return;
     }
     $project_id = $node->georefine_project_id[LANGUAGE_NONE][0]['value'];
-    $GEOREFINE_PROJECT_URL_TEMPLATE = GEOREFINE_BASE_URL . '/projects/view/client/%s/';
+    $GEOREFINE_PROJECT_URL_TEMPLATE = GEOREFINE_BASE_URL . '/projects/%s/view/client/';
     $vars['georefine_project_url'] = sprintf($GEOREFINE_PROJECT_URL_TEMPLATE, $project_id);
   }
 }
