@@ -41,6 +41,11 @@ function sasi_home_upload_project_completed($node){
     drupal_mail('sasi_home', 'task_finished', $task_array['config']['notify'], null, array('task_id' => $node->nid, 'task_url' => $task_status_page_url), NULL, TRUE);
   }
 
+  // Delete project file.
+  $fid = $task_array['config']['fid'];
+  $f = file_load($fid);
+  file_delete($f);
+
   if ($task_array['status'] == 'resolved'){
     $project_id = $task_array['data']['project_id'];
 
