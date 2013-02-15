@@ -1,21 +1,18 @@
 
   <div id="header" class="clearfix">
-        <div id="logo-floater">
-        <?php if ($logo || $site_name): ?>
-          <?php if ($title): ?>
-            <div id="branding"><strong><a href="<?php print $front_page ?>">
-            <?php if ($logo): ?>
+    <div id="logo-floater">
+        <div id="branding">
+          <strong>
+            <a href="<?php print $front_page ?>">
               <img src="<?php print $logo ?>" alt="<?php print $site_name ?>" title="<?php print $site_name ?>" id="logo" />
-            <?php endif; ?>
-            </a></strong></div>
-          <?php else: /* Use h1 when the content title is empty */ ?>
-            <h1 id="branding"><a href="<?php print $front_page ?>">
-            <?php if ($logo): ?>
-              <img src="<?php print $logo ?>" alt="<?php print $site_name ?>" title="<?php print $site_name ?>" id="logo" />
-            <?php endif; ?>
-            </a></h1>
-        <?php endif; ?>
-        <?php endif; ?>
+            </a>
+          </strong>
+          <div class="ssb_logo">
+            <a href="http://www.nefsc.noaa.gov/read/socialsci/">
+              <img class="ssb_icon" src="<?php print $ssb_icon?>"
+            </a>
+          </div>
+        </div>
     </div>
 
   </div>

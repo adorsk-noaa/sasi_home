@@ -13,6 +13,22 @@ body{
   background-color: inherit;
 }
 
+#branding > strong {
+  float: left;
+}
+
+.ssb_logo{
+  float: right;
+  height: 57px;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+.ssb_icon {
+  height: 100%;
+}
+
 #container {
   border: 0;
 }
@@ -62,3 +78,6 @@ h1.with-tabs {
 #sasi-login a{
   color: gray;
 }
+
+
+
