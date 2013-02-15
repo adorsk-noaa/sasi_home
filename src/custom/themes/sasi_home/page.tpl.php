@@ -9,7 +9,7 @@
           </strong>
           <div class="ssb_logo">
             <a href="http://www.nefsc.noaa.gov/read/socialsci/">
-              <img class="ssb_icon" src="<?php print $ssb_icon?>"
+              <img class="ssb_icon" src="<?php print $ssb_icon?>"/>
             </a>
           </div>
         </div>
